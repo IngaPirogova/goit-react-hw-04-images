@@ -5,7 +5,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
 import { Modal } from './Modal/Modal';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { animateScroll } from 'react-scroll';
 
 export function App() {
@@ -18,7 +18,7 @@ export function App() {
   const [isVisibleBtn, setIsVisibleBtn] = useState(false);
 
   const handleFormSubmit = searchName => {
-    setSearchName('');
+    setSearchName(searchName);
     setPage(1);
     setPictures([]);
     setStatus('idle');
@@ -48,23 +48,30 @@ export function App() {
   };
 
   useEffect(() => {
-    
+    if (!searchName) {
+      return;
+    }
+
     async function getImages() {
-     
-      // if (!searchName) {
-      //   return;
-      // }
+      setStatus('pending');
+
       const response = await api.fetchResponce(searchName, page);
-                
-      if (prevSearchName => prevSearchName !== searchName) {
-         setStatus('pending');
-        console.log(response);       
+      console.log(response);
+
+      if (response.hits <= 0) {
+        toast.error(`Not found "${searchName}"`);
+        return;
+      } else {
+        toast.success(`By "${searchName}" found "${response.total}" images`);
       }
+
+      setPictures(prevPictures => [...prevPictures, ...response.hits]);
+
       setPictures(response.hits);
       setIsVisibleBtn(true);
       setStatus('resolved');
 
-        setPictures(prevPictures => [...prevPictures, ...response.hits]);
+      return;
     }
     getImages();
   }, [searchName, page]);
@@ -90,3 +97,38 @@ export function App() {
   );
 }
 
+// useEffect(() => {
+
+//   async function getImages() {
+//     if (!searchName) {
+//       return;
+//     }
+
+//     if (prevSearchName => prevSearchName !== searchName) {
+//       setStatus('pending');
+//       const response = await api.fetchResponce(searchName, page);
+//       console.log(response);
+
+//       if (response.hits <= 0) {
+//         toast.error(`Not found "${searchName}"`);
+//         return;
+//       } else {
+//         toast.success(`By "${searchName}" found "${response.total}" images`);
+//       }
+
+//       setPictures(response.hits);
+//       setIsVisibleBtn(true);
+//       setStatus('resolved');
+//       return;
+//     }
+
+//     if (prevPage => prevPage !== page) {
+//       setStatus('pending');
+//       const response = await api.fetchResponce(searchName, page);
+//       setPictures(prevPictures => [...prevPictures, ...response.hits]);
+//       setStatus('resolved');
+//     }
+//     return;
+//   }
+//   getImages();
+// }, [searchName, page]);
