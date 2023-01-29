@@ -5,7 +5,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
 import { Modal } from './Modal/Modal';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { animateScroll } from 'react-scroll';
 
 export function App() {
@@ -48,12 +48,16 @@ export function App() {
   };
 
   useEffect(() => {
+    
     async function getImages() {
-           
+     
+      if (!searchName) {
+        return;
+      }
       const response = await api.fetchResponce(searchName, page);
+                
       if (prevSearchName => prevSearchName !== searchName) {
-        // const response = await api.fetchResponce(searchName, page);
-        setStatus('pending');
+         setStatus('pending');
         console.log(response);       
       }
       setPictures(response.hits);
