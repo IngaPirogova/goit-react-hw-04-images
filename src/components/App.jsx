@@ -51,9 +51,9 @@ export function App() {
     
     async function getImages() {
      
-      if (!searchName) {
-        return;
-      }
+      // if (!searchName) {
+      //   return;
+      // }
       const response = await api.fetchResponce(searchName, page);
                 
       if (prevSearchName => prevSearchName !== searchName) {
