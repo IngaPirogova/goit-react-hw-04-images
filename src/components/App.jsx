@@ -67,7 +67,7 @@ export function App() {
 
       setPictures(prevPictures => [...prevPictures, ...response.hits]);
 
-      setPictures(response.hits);
+      // setPictures(response.hits);
       setIsVisibleBtn(true);
       setStatus('resolved');
 
@@ -96,39 +96,3 @@ export function App() {
     </div>
   );
 }
-
-// useEffect(() => {
-
-//   async function getImages() {
-//     if (!searchName) {
-//       return;
-//     }
-
-//     if (prevSearchName => prevSearchName !== searchName) {
-//       setStatus('pending');
-//       const response = await api.fetchResponce(searchName, page);
-//       console.log(response);
-
-//       if (response.hits <= 0) {
-//         toast.error(`Not found "${searchName}"`);
-//         return;
-//       } else {
-//         toast.success(`By "${searchName}" found "${response.total}" images`);
-//       }
-
-//       setPictures(response.hits);
-//       setIsVisibleBtn(true);
-//       setStatus('resolved');
-//       return;
-//     }
-
-//     if (prevPage => prevPage !== page) {
-//       setStatus('pending');
-//       const response = await api.fetchResponce(searchName, page);
-//       setPictures(prevPictures => [...prevPictures, ...response.hits]);
-//       setStatus('resolved');
-//     }
-//     return;
-//   }
-//   getImages();
-// }, [searchName, page]);
