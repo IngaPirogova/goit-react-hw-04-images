@@ -61,9 +61,15 @@ export function App() {
       if (response.hits <= 0) {
         toast.error(`Not found "${searchName}"`);
         return;
-      } else {
+      } 
+      if (page === 1) {
         toast.success(`By "${searchName}" found "${response.total}" images`);
       }
+      
+      
+      // else {
+      //   toast.success(`By "${searchName}" found "${response.total}" images`);
+      // }
 
       setPictures(prevPictures => [...prevPictures, ...response.hits]);
 
